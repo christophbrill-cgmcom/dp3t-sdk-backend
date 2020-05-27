@@ -143,32 +143,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-                <groupId>ch.ubique.openapi</groupId>
-                <artifactId>springboot-swagger-3</artifactId>
-                <version>1.2.4</version>
-                <configuration>
-                    <apiVersion>1.0-gapple</apiVersion>
-                    <basePackages>
-                       org.dpppt.backend.sdk.model
-                    </basePackages>
-					<blackListedPackages>
-						<blackListedPackage>com.google.protobuf</blackListedPackage>
-					</blackListedPackages>
-					<ignoredTypes>
-						<ignoredType>byte</ignoredType>
-					</ignoredTypes>
-                    <controllers>
-                        <controller>org.dpppt.backend.sdk.ws.controller.DPPPTController</controller>
-						<controller> org.dpppt.backend.sdk.ws.controller.GaenController</controller>
-                    </controllers>
-                    <description>DP3T API</description>
-                    <apiUrls>
-                        <apiUrl>https://demo.dpppt.org</apiUrl>
-                    </apiUrls>
-                    <title>DP3T API</title>
-                </configuration>
-            </plugin>
+
 		</plugins>
 	</build>
 
@@ -181,5 +156,63 @@
           <snapshots><enabled>true</enabled></snapshots>
     </pluginRepository>
     </pluginRepositories>
-
+	<profiles>
+		<!-- To enable this profile call 'mvn -DBUILD_DOC=1 compile' -->
+		<profile>
+			<id>documentation</id>
+			<activation>
+				<property>
+					<name>BUILD_DOC</name>
+					<value>1</value>
+				</property>
+			</activation>
+			<repositories>
+				<repository>
+					<id>github-annotation</id>
+					<name>GitHub OWNER Apache Maven Packages</name>
+					<url>https://maven.pkg.github.com/Ubique-OSS/springboot-swagger3-annotations</url>
+					<releases><enabled>true</enabled></releases>
+					<snapshots><enabled>true</enabled></snapshots>
+				</repository>
+			</repositories>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>ch.ubique.openapi</groupId>
+						<artifactId>springboot-swagger-3</artifactId>
+						<version>1.2.4</version>
+						<executions>
+							<execution>
+								<phase>compile</phase>
+								<goals>
+									<goal>springboot-swagger-3</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<apiVersion>1.0-gapple</apiVersion>
+							<basePackages>
+								org.dpppt.backend.sdk.model
+							</basePackages>
+							<blackListedPackages>
+								<blackListedPackage>com.google.protobuf</blackListedPackage>
+							</blackListedPackages>
+							<ignoredTypes>
+								<ignoredType>byte</ignoredType>
+							</ignoredTypes>
+							<controllers>
+								<controller>org.dpppt.backend.sdk.ws.controller.DPPPTController</controller>
+								<controller> org.dpppt.backend.sdk.ws.controller.GaenController</controller>
+							</controllers>
+							<description>DP3T API</description>
+							<apiUrls>
+								<apiUrl>https://demo.dpppt.org</apiUrl>
+							</apiUrls>
+							<title>DP3T API</title>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
